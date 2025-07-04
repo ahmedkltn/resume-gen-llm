@@ -1,29 +1,17 @@
+FROM node:20-alpine
 
-
-# Install dependencies only when needed
-FROM node:20-alpine AS deps
+# Set working directory
 WORKDIR /app
+
+# Copy package files and install dependencies
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Rebuild the source code only when needed
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy all source files
 COPY . .
-RUN npm run build
 
-# Production image
-FROM node:20-alpine AS runner
-WORKDIR /app
-
-# Install only production dependencies
-ENV NODE_ENV production
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/node_modules ./node_modules
-
+# Expose the port Next.js runs on
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+# Start the development server
+CMD ["npm", "run", "dev"]

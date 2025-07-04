@@ -1,0 +1,21 @@
+
+services:
+  backend:
+    build:
+      context: ./resume-ai-backend
+    container_name: resume_backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./resume-ai-backend:/app
+    restart: always
+
+  frontend:
+    build:
+      context: ./resume-ai-frontend
+    container_name: resume_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: always

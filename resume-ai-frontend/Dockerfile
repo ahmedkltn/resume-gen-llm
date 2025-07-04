@@ -13,5 +13,8 @@ COPY . .
 # Expose the port Next.js runs on
 EXPOSE 3000
 
-# Start the development server
+# Build the Next.js application
+RUN npm run build
+
+# Start the production server
 CMD ["npm", "run", "start"]

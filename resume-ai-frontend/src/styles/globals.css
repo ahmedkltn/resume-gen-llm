@@ -1,0 +1,12 @@
+@import "tailwindcss/preflight";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+body {
+  @apply bg-gradient-to-br from-purple-900 to-black text-white min-h-screen font-sans;
+}
+
+::selection {
+  background-color: #a855f7;
+  color: white;
+}

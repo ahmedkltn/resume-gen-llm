@@ -6,8 +6,6 @@ services:
     container_name: resume_backend
     ports:
       - "8080:8080"
-    volumes:
-      - ./resume-ai-backend:/app
     restart: always
 
   frontend:

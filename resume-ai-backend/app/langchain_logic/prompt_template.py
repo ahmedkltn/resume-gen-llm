@@ -30,89 +30,84 @@ FORMATTING REQUIREMENTS:
 - Ensure consistency in tense and style
 - Include relevant keywords naturally within existing content
 
-OUTPUT: Return the optimized resume in LaTeX format using a clean and professional style. Use sections such as \section*[Experience], \section*[Skills], \section*[Education], and consistent formatting throughout. Do not include the full LaTeX document (no \documentclass or \begin[document]); return only the LaTeX body content that can be inserted into a resume template.
+OUTPUT REQUIREMENTS:
+- Return ONLY the LaTeX body content (no \\documentclass, \\begin{{document}}, or \\end{{document}})
+- Use proper LaTeX formatting with double curly braces for LaTeX commands
+- Use sections like \\section*{{Experience}}, \\section*{{Skills}}, \\section*{{Education}}
+- Ensure all LaTeX syntax uses double curly braces: \\textbf{{text}}, \\textit{{text}}, \\item, etc.
+- Include proper line breaks with \\\\ where needed
+- Use \\begin{{itemize}} and \\end{{itemize}} for bullet points
+- Start directly with the resume content - no explanations or additional text
+
+EXAMPLE LATEX STRUCTURE:
+\\begin{{center}}
+\\textbf{{\\Large CANDIDATE NAME}} \\\\
+Email: email@example.com $\\mid$ Phone: (555) 123-4567 \\\\
+\\end{{center}}
+
+\\section*{{EXPERIENCE}}
+\\textbf{{Job Title}} \\hfill \\textit{{Date Range}} \\\\
+\\textit{{Company Name}} \\\\
+\\begin{{itemize}}
+\\item Achievement or responsibility
+\\end{{itemize}}
 """
 )
 
 cover_prompt = PromptTemplate(
     input_variables=["resume", "job"],
     template="""
-    Create a professional cover letter based on the resume and job description provided.
-    
-    IMPORTANT INSTRUCTIONS:
-    1. Extract the candidate's name, contact information, and experience from the resume
-    2. Do NOT include placeholders like [Your Name], [Your Address], or [Date]
-    3. Do NOT mention where the job was found or use "Dear Hiring Manager"
-    4. Start directly with the company name if mentioned in the job description
-    5. Focus on specific achievements and quantifiable results from the resume
-    6. Keep it concise (3-4 paragraphs maximum)
-    7. End with a professional closing using the candidate's actual name
-    
-    Resume:
-    {resume}
-    
-    Job Description:
-    {job}
-    
-    OUTPUT: Return the cover letter in LaTeX format. Use a standard business letter layout with appropriate line breaks, indentation, and formatting. Do not include the full LaTeX document (no \documentclass or \begin[document]); return only the LaTeX body content that can be inserted into a resume template.
-    """
-)
+Create a professional cover letter based on the resume and job description provided.
 
+IMPORTANT INSTRUCTIONS:
+1. Extract the candidate's name, contact information, and experience from the resume
+2. Do NOT include placeholders like [Your Name], [Your Address], or [Date]
+3. Do NOT mention where the job was found or use "Dear Hiring Manager"
+4. Start directly with the company name if mentioned in the job description
+5. Focus on specific achievements and quantifiable results from the resume
+6. Keep it concise (3-4 paragraphs maximum)
+7. End with a professional closing using the candidate's actual name
 
-update_resume = PromptTemplate(
-    input_variables=["resume", "prompt"],
-    template="""
-You are a professional resume editor with expertise in customizing resumes based on specific user requirements.
-
-CRITICAL RULES:
-- NEVER add experiences, skills, or qualifications that don't exist in the original resume
-- ONLY modify, reorganize, or rephrase existing content
-- Maintain factual accuracy and truthfulness
-- Follow the user's specific instructions precisely
-
-CURRENT RESUME:
+Resume:
 {resume}
 
-USER INSTRUCTIONS:
-{prompt}
+Job Description:
+{job}
 
-TASK: Update the resume according to the user's specific requirements while maintaining:
-1. All factual information from the original resume
-2. Professional formatting and structure
-3. Consistency in style and tone
-4. Proper grammar and spelling
+OUTPUT REQUIREMENTS:
+- Return ONLY the LaTeX body content (no \\documentclass, \\begin{{document}}, or \\end{{document}})
+- Use proper LaTeX formatting with double curly braces for LaTeX commands
+- Use standard business letter formatting
+- Ensure all LaTeX syntax uses double curly braces: \\textbf{{text}}, \\textit{{text}}, etc.
+- Include proper line breaks with \\\\ where needed
+- Start directly with the cover letter content - no explanations or additional text
 
-OUTPUT: Return the updated resume in LaTeX format using a clean and professional layout. Use standard sections such as \section*{Experience}, \section*{Skills}, \section*{Education}, and ensure consistent styling. Do not include a full LaTeX document setup.
-"""
-)
+EXAMPLE LATEX STRUCTURE:
+\\begin{{flushleft}}
+Candidate Name \\\\
+Email Address \\\\
+Phone Number \\\\
+\\end{{flushleft}}
 
-# User-directed cover letter update prompt
-update_cover_letter = PromptTemplate(
-    input_variables=["cover_letter", "prompt"],
-    template="""
-You are a professional cover letter editor specializing in customizing cover letters based on specific user feedback.
+\\vspace{{0.5cm}}
 
-CURRENT COVER LETTER:
-{cover_letter}
+\\begin{{flushleft}}
+Company Name \\\\
+Department (if known) \\\\
+\\end{{flushleft}}
 
-USER INSTRUCTIONS:
-{prompt}
+\\vspace{{0.5cm}}
 
-TASK: Update the cover letter according to the user's specific requirements while maintaining:
-1. Professional business letter format
-2. Appropriate tone and style
-3. Logical flow and structure
-4. Proper grammar and spelling
-5. Relevance to the job opportunity
+Dear Hiring Team,
 
-Common update requests you can handle:
-- Adjusting tone (more formal/casual, confident/humble)
-- Changing focus (different skills/experiences to highlight)
-- Modifying length (shorter/longer)
-- Restructuring paragraphs
-- Updating specific phrases or sentences
-- Changing the opening/closing
+Paragraph content goes here...
 
-OUTPUT: Return the updated cover letter in LaTeX format. Maintain a professional business letter layout and proper formatting. Return only the body content without full LaTeX document structure.
+\\vspace{{0.3cm}}
+
+Sincerely,
+
+\\vspace{{0.3cm}}
+
+Candidate Name
 """
 )
